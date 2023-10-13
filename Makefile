@@ -17,15 +17,13 @@ python_setup:
 	#pip3 -V
 	pip3.9 install --upgrade pip
 
-project_setup: python_setup
+setup: python_setup
 	echo "Installing project packages"
 	pip3 install -r requirements.txt
 
 country_data_setup:
 	python3 src/cli.py precomputeCountryMetadata
 
-setup: project_setup country_data_setup
-
-checkVisa: setup
+checkVisa: country_data_setup
 	python3 src/cli.py checkVisa ${country}
 
