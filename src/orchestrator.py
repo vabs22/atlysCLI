@@ -17,8 +17,8 @@ class AtlysOrchestrator(object):
 
         supported, country_metadata = self.country_service.get_country_metadata(country_code)
         if not supported:
-            return "Unfortunately we don't support this country at Atlys, but you can refer the full list of " \
-                   "countries we support using command: \"make getSupportedCountries\"", None
+            return "Unfortunately we don't support visa for {} currently, but you can refer the full list of " \
+                   "countries we support using command: \"make getSupportedCountries\"".format(country_name), None
 
         visa_url = self.country_service.generate_country_visa_page(country_metadata)
         return None, self.visa_service.get_country_visa_details(visa_url, country_metadata)

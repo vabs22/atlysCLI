@@ -6,7 +6,7 @@ class VisaService(object):
         "price": [
             {
                 "tag": "p",
-                "class": "",
+                "class": "text-lg font-bold text-black",
                 "index": 0
             }
         ],

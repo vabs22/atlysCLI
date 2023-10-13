@@ -1,2 +1,3 @@
 .idea
 resources/country_metadata.json
+src/__pycache__/

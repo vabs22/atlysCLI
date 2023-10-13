@@ -13,7 +13,7 @@ def scrape_data_from_web_page(url, fields_data) -> {}:
 
     driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install()))
     driver.get(url)
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(60)
 
     soup = BeautifulSoup(driver.page_source, 'html5lib')
     # soup.find('p', attrs={"class": "text-lg font-bold text-black"})
@@ -41,7 +41,6 @@ def scrape_data_from_web_page(url, fields_data) -> {}:
 def get_json_data(url) -> (str, bool, str):
     try:
         response = requests.request("GET", url, timeout=2)
-
         if response.status_code != 200:
             return None, False, "Got non 2xx response: {}".format(response.status_code)
 

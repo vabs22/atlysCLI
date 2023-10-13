@@ -1,6 +1,6 @@
 import os
 import json
-from iso3166 import countries as iso3166_countries
+import pycountry
 from utils import get_json_data
 
 FILE_DIRECTORY_PATH = os.path.dirname(__file__)
@@ -10,16 +10,23 @@ class CountryService(object):
     country_data_json_file_path = "{}/../resources/country_metadata.json".format(FILE_DIRECTORY_PATH)
 
     def fetch_and_save_all_country_metadata(self):
-        countries_json_data = get_json_data('https://www.atlys.com/_next/data/XvaaJjGr7B9FuCpjZo0q1/en-IN.json')
+        countries_json_data, is_error, error_message = \
+            get_json_data('https://www.atlys.com/_next/data/XvaaJjGr7B9FuCpjZo0q1/en-IN.json')
+        if is_error:
+            print(error_message)
+            return
+
         supported_countries = (countries_json_data.get("pageProps") or {}).get("clpPages") or {}
 
         country_metadata = {}
         for country_data in supported_countries:
             country_code = country_data.get("data").get("destination_code")
+            iso_country_data = pycountry.countries.get(alpha_2=country_code)
             country_metadata[country_code] = {
                 "ref_url": country_data.get("uid"),
                 "id": country_data.get("id"),
-                "country_code": country_code
+                "country_code": country_code,
+                "name": iso_country_data.name
             }
 
         # Writing to sample.json
@@ -42,11 +49,14 @@ class CountryService(object):
         return True, countries_metadata_map.get(country_code)
 
     def identify_country_code(self, search_query) -> (bool, str, str):
-        country = iso3166_countries.get(search_query)
-        if not country:
-            return False, None, None
+        try:
+            countries = pycountry.countries.search_fuzzy(search_query)
+            if not countries or len(countries) < 1:
+                return False, None, None
 
-        return True, country.alpha2, country.name
+            return True, countries[0].alpha_2, countries[0].name
+        except:
+            return False, None, None
 
     def generate_country_visa_page(self, country_metadata) -> str:
         ref_url = country_metadata.get("ref_url")
