@@ -1,0 +1,5 @@
+beautifulsoup4==4.11.1
+pycountry==22.3.5
+Requests==2.31.0
+selenium==4.14.0
+webdriver_manager==4.0.1

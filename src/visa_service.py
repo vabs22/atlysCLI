@@ -43,7 +43,7 @@ class VisaService(object):
     def get_country_visa_details(self, url, country_metadata) -> str:
         country_name = country_metadata.get("name")
         scraped_response = scrape_data_from_web_page(url, self.fields_data)
-        text_response = "You can get a {} visa for {} at just {}. We can guarantee you will get it by {}. " \
+        text_response = "You can get a {} visa for {} at just {}. We guarantee you will get it by {}. " \
                         "#visalikepizza".format(scraped_response.get("visa_type"), country_name,
                                                 scraped_response.get("price"), scraped_response.get("eta"))
         return text_response
