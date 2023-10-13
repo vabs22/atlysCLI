@@ -27,3 +27,6 @@ country_data_setup:
 checkVisa: country_data_setup
 	python3 src/cli.py checkVisa ${country}
 
+getSupportedCountries: country_data_setup
+	python3 src/cli.py getSupportedCountries
+
