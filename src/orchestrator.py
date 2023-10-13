@@ -30,3 +30,14 @@ class AtlysOrchestrator(object):
             - Save it
         """
         self.country_service.fetch_and_save_all_country_metadata()
+
+    def get_supported_countries(self):
+        countries_metadata_map = self.country_service.get_all_country_metadata()
+        response = "Currently we support {} countries, here are there names: ".format(len(countries_metadata_map))
+
+        for country_code, country_data in countries_metadata_map.items():
+            name = country_data.get("name")
+            response += "{} ({}), ".format(name, country_code)
+
+        response = response[:-2]
+        return response

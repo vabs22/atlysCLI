@@ -27,11 +27,15 @@ class CountryService(object):
             food_categories_json = json.dumps(country_metadata, indent=4)
             outfile.write(food_categories_json)
 
-    def get_country_metadata(self, country_code) -> (bool, {}):
+    def get_all_country_metadata(self) -> {}:
         countries_metadata_file = open(self.country_data_json_file_path, "r")
         countries_metadata_map = json.load(countries_metadata_file)
         countries_metadata_file.close()
 
+        return countries_metadata_map
+
+    def get_country_metadata(self, country_code) -> (bool, {}):
+        countries_metadata_map = self.get_all_country_metadata()
         if country_code not in countries_metadata_map:
             return False, None
 
